@@ -102,7 +102,7 @@ var series = [
 		data: d1,
 		lines: {
 			show: true,
-			lineWidth: 2,
+			lineWidth: 1,
 			fill: false
 		},
 		color: "rgb(255,50,50)"
@@ -113,7 +113,7 @@ var series = [
 		data: d2,
 		lines: {
 			show: true,
-			lineWidth: 2,
+			lineWidth: 1,
 			fill: true
 		},
 		color: "rgb(50,50,255)",

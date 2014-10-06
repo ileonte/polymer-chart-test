@@ -1,49 +1,28 @@
 ( function() {
 	var original_offset_fn = jQuery.fn.offset;
 	var patched = false;
-	var complexpatch = false;
 
-	function firstHost( el ) {
-		while ( el ) {
-			if ( el.host ) return el.host;
-			el = el.parentNode;
-		}
-		return null;
-	}
+	jQuery.fn.applyOffsetPatch = function() {
+		jQuery.fn.offset = function() {
+			if ( !this.length ) return undefined;
 
-	jQuery.fn.applyOffsetPatch = function( complex ) {
-		if ( complex ) {
-			jQuery.fn.offset = function() {
-				if ( !this.length ) return undefined;
+			var el = this[0];
+			var box = el.getBoundingClientRect();
+			var off = { left: box.left, top: box.top };
 
-				var el  = this[0];
-				var off = original_offset_fn.apply( this );
-				var doff;
-				var sr;
-
-				while ( el ) {
-					sr = firstHost( el );
-					if ( sr ) {
-						doff = original_offset_fn.apply( jQuery( sr ) );
-						if ( doff ) {
-							off.left += doff.left;
-							off.top  += doff.top;
-						}
-					}
-					el = sr;
+			while ( el ) {
+				var host = el.parentNode || el.host;
+				if ( host && host.nodeType === 1 ) {
+					off.left += host.scrollLeft;
+					off.top  += host.scrollTop;
 				}
+				el = host;
+			}
 
-				return off;
-			};
-		} else {
-			jQuery.fn.offset = function() {
-				if ( !this.length ) return undefined;
-				return { left: this[0].offsetLeft, top: this[0].offsetTop };
-			};
-		}
+			return off;
+		};
 
 		patched = true;
-		complexpatch = complex;
 
 		return this;
 	};
@@ -62,11 +41,7 @@
 		if ( !patched ) {
 			return 'PATCH NOT APPLIED';
 		} else {
-			if ( complexpatch ) {
-				return 'PATCH APPLIED (COMPLEX FORM)';
-			} else {
-				return 'PATCH APPLIED (SIMPLE FORM)';
-			}
+			return 'PATCH APPLIED';
 		}
 	};
 } )();

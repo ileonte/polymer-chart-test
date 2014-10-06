@@ -25,10 +25,8 @@
 <body fullbleed vertical layout unresolved>
 	<div layout vertical style="padding: 10px;">
 		<div>
+			Status: <span id="status"></span><br>
 			<input id="dopatch" type="checkbox" value="1" checked>Apply patch</input>
-			<input id="complexpatch" type="checkbox" value="1" checked>Alternative patch</input>
-			<button id="toggle" onclick="applyPatch()" disabled>Apply changes</button>
-			<span id="status"></span>
 		</div>
 		<div layout horizontal>
 			<app-chart name="Simple flex 1"></app-chart>
@@ -46,11 +44,11 @@
 	</div>
 
 	<script>
-		function applyPatch() {
+		function applyPatch( yesno ) {
 			var e = $( '#status' );
 
-			if ( $( '#dopatch' )[0].checked ) {
-				e.applyOffsetPatch( $( '#complexpatch' )[0].checked ? true : false ).html( e.offsetPatchStatus() );
+			if ( yesno ) {
+				e.applyOffsetPatch().html( e.offsetPatchStatus() );
 			} else {
 				e.revertOffsetPatch().html( e.offsetPatchStatus() );
 			}
@@ -59,7 +57,10 @@
 		}
 
 		$( document ).on( 'polymer-ready', function() {
-			applyPatch();
+			applyPatch( true );
+		} );
+		$( '#dopatch' ).on( 'change', function() {
+			applyPatch( this.checked );
 		} );
 	</script>
 </body>
