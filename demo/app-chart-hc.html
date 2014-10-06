@@ -1,0 +1,25 @@
+<link rel="import" href="//www.polymer-project.org/components/polymer/polymer.html">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="jquery.offset.fix.js"></script>
+
+<script src="//code.highcharts.com/highcharts.js"></script>
+<script src="//code.highcharts.com/highcharts-more.js"></script>
+
+<polymer-element name="app-chart">
+	<template>
+		<div id="chart" style="min-width: 400px; min-height: 300px;">&nbsp;</div>
+	</template>
+	<script>
+		Polymer( 'app-chart', {
+			publish: {
+				name: { reflect: true, value: '' }
+			},
+
+			domReady: function() {
+				var opts = JSON.parse( JSON.stringify( chartopts ) );
+				opts.title.text = this.name;
+				var e = $( this.$.chart ).highcharts( opts );
+			}
+		} );
+	</script>
+</polymer-element>
