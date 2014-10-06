@@ -1,0 +1,24 @@
+<link rel="import" href="//www.polymer-project.org/components/polymer/polymer.html">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="jquery.offset.fix.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.time.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.fillbetween.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.selection.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.crosshair.min.js"></script>
+
+<polymer-element name="app-chart">
+	<template>
+		<div id="chart" style="min-width: 400px; min-height: 300px; position: relative; left: 0px; top: 0px;">&nbsp;</div>
+	</template>
+	<script>
+		Polymer( 'app-chart', {
+			domReady: function() {
+				var e = $.plot( $( this.$.chart ), series, chartopts );
+			}
+		} );
+	</script>
+</polymer-element>
+
+
+

@@ -1,0 +1,32 @@
+<link rel="import" href="//www.polymer-project.org/components/polymer/polymer.html">
+
+<polymer-element name="el-test">
+	<template>
+		<div layout horizontal>
+			<template repeat="{{i in loop}}">
+				<template if="{{i != chartcount}}"><app-chart name="{{nameprefix}}Nested flex {{i}}"></app-chart></template>
+				<template if="{{i == chartcount}}"><app-chart name="{{nameprefix}}Nested flex {{i}}" flex></app-chart></template>
+			</template>
+		</div>
+	</template>
+	<script>
+		Polymer( 'el-test', {
+			publish: {
+				chartcount: { reflect: true, value: 1 },
+				nameprefix: { reflect: true, value: '' }
+			},
+
+			domReady: function() {
+				this.loop = [];
+				for ( var i = 0; i < this.chartcount; i++ )
+					this.loop.push( i + 1 );
+			}
+		} );
+	</script>
+</polymer-element>
+
+<polymer-element name="el-test-2" attributes="chartcount" noscript>
+	<template>
+		<el-test chartcount="{{chartcount}}" nameprefix="Deep "></el-test>
+	</template>
+</polymer-element>

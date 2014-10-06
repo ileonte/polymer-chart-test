@@ -1,0 +1,66 @@
+<html>
+<head>
+	<script src="//www.polymer-project.org/components/platform/platform.js"></script>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="jquery.offset.fix.js"></script>
+
+	<link rel="import" href="//www.polymer-project.org/components/polymer/polymer.html">
+	<link rel="import" href="app-chart-hc.html">
+	<link rel="import" href="el-test.html">
+
+	<script src="chart-data-hc.js"></script>
+
+	<style>
+	body {
+		transition: opacity ease-in 0.2s;
+		font-family: 'Roboto', sans-serif;
+		font-size: 13px;
+	}
+	body[unresolved] {
+		opacity: 0;
+	}
+	</style>
+</head>
+<body fullbleed vertical layout unresolved>
+	<div layout vertical style="padding: 10px;">
+		<div>
+			<input id="dopatch" type="checkbox" value="1" checked>Apply patch</input>
+			<input id="complexpatch" type="checkbox" value="1">Alternative patch</input>
+			<button id="toggle" onclick="applyPatch()" disabled>Apply changes</button>
+			<span id="status"></span>
+		</div>
+		<div layout horizontal>
+			<app-chart name="Simple flex 1"></app-chart>
+			<app-chart name="Simple flex 2" flex></app-chart>
+			<app-chart name="Simple flex 3"></app-chart>
+		</div>
+
+		<div>
+			<el-test-2 chartcount="2"></el-test-2>
+		</div>
+
+		<div>
+			<el-test chartcount="3"></el-test>
+		</div>
+	</div>
+
+	<script>
+		function applyPatch() {
+			var e = $( '#status' );
+
+			if ( $( '#dopatch' )[0].checked ) {
+				e.applyOffsetPatch( $( '#complexpatch' )[0].checked ? true : false ).html( e.offsetPatchStatus() );
+			} else {
+				e.revertOffsetPatch().html( e.offsetPatchStatus() );
+			}
+
+			$( '#toggle' )[0].disabled = false;
+		}
+
+		$( document ).on( 'polymer-ready', function() {
+			applyPatch();
+		} );
+	</script>
+</body>
+</html>
