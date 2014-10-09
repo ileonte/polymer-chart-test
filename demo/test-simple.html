@@ -8,6 +8,48 @@
 
 	<link rel="import" href="//www.polymer-project.org/components/polymer/polymer.html">
 
+	<polymer-element name="my-div">
+	<template>
+		<style>
+		#thediv {
+			position: relative;
+			left: 0px;
+			top: 0px;
+			min-width: 400px;
+			min-height: 200px;
+			color: white;
+			padding: 10px;
+			margin: 10px;
+			border: 0px;
+			background-color: {{bkg}};
+		}
+		</style>
+		<div id="thediv">
+			<span id="s1"></span><br>
+			<span id="s2"></span>
+			<content></content>
+		</div>
+	</template>
+	<script>
+		Polymer( 'my-div', {
+			publish: {
+				bkg : { reflect: true, value: "white" },
+			},
+
+			domReady: function() {
+				var el = $( this.$.thediv );
+				var s1 = $( this.$.s1 );
+				var s2 = $( this.$.s2 );
+
+				s1.html( 'Offset before patch: { left: ' + el.offset().left + ', top: ' + el.offset().top + ' }' );
+				el.applyOffsetPatch();
+				s2.html( 'Offset after patch: { left: ' + el.offset().left + ', top: ' + el.offset().top + ' }' );
+				el.revertOffsetPatch();
+			}
+		} );
+	</script>
+	</polymer-element>
+
 	<style>
 	body {
 		transition: opacity ease-in 0.2s;
@@ -21,42 +63,6 @@
 	</style>
 </head>
 <body fullbleed vertical layout unresolved>
-	<polymer-element name="my-div">
-	<template>
-		<style>
-		#thediv {
-			position: relative;
-			left: 0px;
-			top: 0px;
-			min-width: 400px;
-			min-height: 200px;
-			color: white;
-			padding: 10px;
-			margin: 10px;
-			background-color: {{bkg}};
-		}
-		</style>
-		<div id="thediv">
-			<content></content>
-		</div>
-	</template>
-	<script>
-		Polymer( 'my-div', {
-			publish: {
-				bkg : { reflect: true, value: "white" },
-			},
-
-			domReady: function() {
-				var el = $( this.$.thediv );
-
-				el.applyOffsetPatch();
-				el.prepend( 'Offset after patch: { left: ' + el.offset().left + ', top: ' + el.offset().top + ' }' );
-				el.revertOffsetPatch();
-				el.prepend( 'Offset before patch: { left: ' + el.offset().left + ', top: ' + el.offset().top + ' }<br>' );
-			}
-		} );
-	</script>
-	</polymer-element>
 
 	<my-div bkg="red">
 		<my-div bkg="darkred">
