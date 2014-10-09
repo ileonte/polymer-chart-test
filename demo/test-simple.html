@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="//www.polymer-project.org/components/platform/platform.js"></script>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="jquery.offset.fix.js"></script>
+
+	<link rel="import" href="//www.polymer-project.org/components/polymer/polymer.html">
+
+	<style>
+	body {
+		transition: opacity ease-in 0.2s;
+		font-family: 'Roboto', sans-serif;
+		font-size: 13px;
+		padding: 10px;
+	}
+	body[unresolved] {
+		opacity: 0;
+	}
+	</style>
+</head>
+<body fullbleed vertical layout unresolved>
+	<polymer-element name="my-div">
+	<template>
+		<style>
+		#thediv {
+			position: relative;
+			left: 0px;
+			top: 0px;
+			min-width: 400px;
+			min-height: 200px;
+			color: white;
+			padding: 10px;
+			margin: 10px;
+			background-color: {{bkg}};
+		}
+		</style>
+		<div id="thediv">
+			<content></content>
+		</div>
+	</template>
+	<script>
+		Polymer( 'my-div', {
+			publish: {
+				bkg : { reflect: true, value: "white" },
+			},
+
+			domReady: function() {
+				var el = $( this.$.thediv );
+
+				el.applyOffsetPatch();
+				el.prepend( 'Offset after patch: { left: ' + el.offset().left + ', top: ' + el.offset().top + ' }' );
+				el.revertOffsetPatch();
+				el.prepend( 'Offset before patch: { left: ' + el.offset().left + ', top: ' + el.offset().top + ' }<br>' );
+			}
+		} );
+	</script>
+	</polymer-element>
+
+	<my-div bkg="red">
+		<my-div bkg="darkred">
+			<my-div bkg="red"></my-div>
+		</my-div>
+	</my-div>
+	<my-div bkg="green"></my-div>
+</body>
+</html>
